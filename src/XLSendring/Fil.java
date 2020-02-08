@@ -87,7 +87,7 @@ public class Fil {
 				
 			
 			
-			try (OutputStream fileOut = new FileOutputStream(path + "TransaskjonslisteTest.xls")) {
+			try (OutputStream fileOut = new FileOutputStream("TransaskjonslisteTest.xls")) {
 				wb.write(fileOut);
 			}
 		} catch (Exception e) {
