@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,7 +20,7 @@ public class Fil {
 
 	public static void main(String[] args)
 			throws FileNotFoundException, IOException, EncryptedDocumentException, InvalidFormatException {
-		try (InputStream inp = new FileInputStream(path + "TransaskjonslisteTest.xls")) {
+		try (InputStream inp = new FileInputStream(path + "transaksjonliste.xls")) {
 			Workbook wb = WorkbookFactory.create(inp);
 			System.out.println("test");
 			Sheet sheet = wb.getSheetAt(0);
@@ -30,13 +31,12 @@ public class Fil {
 				Cell Forklaring = row.getCell(1);
 				String f = Forklaring.getStringCellValue();
 				Cell b = row.getCell(3);
-				
 				double belop = 0.0;
 				if(b != null) {
 					 belop = b.getNumericCellValue();
 				}
-				
 				f = f.toUpperCase();
+				
 //				Husleie eller Fast overføringering mellom egne konti
 				if(f.contains("KONTOREGULERING")) {
 					if(cell == null) {
@@ -44,7 +44,8 @@ public class Fil {
 					}
 					cell.setCellValue(2);
 				}
-//				Faste utgifter
+				
+//				Faste utgifter	
 				if(
 						f.contains("TELIA") ||
 						f.contains("YA Bank") ||
@@ -64,30 +65,18 @@ public class Fil {
 				        f.contains("SANTANDER" ) ||
 				        f.contains("DEMAND") 	
 				        &&
-				        belop > 0
-				        )
+								belop > 0  )
 				        {
 					if(cell == null) {
 						cell = row.createCell(5);
 					}
 					cell.setCellValue(1);
-				} else if ( f.contains("INNKREVINGSSENTRAL")) {
-					cell.setCellValue("");
-				}
 				
 				
+				        }
 			}
-//				if(Forklaring.getStringCellValue().contains("Kontoregulering")) {
-//				if(cell == null) {
-//					cell = row.createCell(5);
-//				}
-//				cell.setCellValue("2");
-//			}
-//           cell.setCellType(CellType.STRING);
-				
-			
-			
-			try (OutputStream fileOut = new FileOutputStream("TransaskjonslisteTest.xls")) {
+		
+			try (OutputStream fileOut = new FileOutputStream(path+"Matias_Vedeler_Cerda_19960926.xls")) {
 				wb.write(fileOut);
 			}
 		} catch (Exception e) {
